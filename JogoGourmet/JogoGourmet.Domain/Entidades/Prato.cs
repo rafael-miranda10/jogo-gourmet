@@ -1,10 +1,11 @@
-﻿using JogoGourmet.Domain.Resources;
+﻿using JogoGourmet.Domain.Interfaces;
+using JogoGourmet.Domain.Resources;
 using JogoGourmet.Domain.Utils;
 using System.Windows.Forms;
 
 namespace JogoGourmet.Domain.Entidades
 {
-    public class Prato : NoDeDecisao
+    public class Prato : NoDeDecisao, IPrato
     {
         public NoDeDecisao Direita { get; private set; }
         public NoDeDecisao Esquerda { get; private set; }
@@ -32,9 +33,7 @@ namespace JogoGourmet.Domain.Entidades
 
         public override bool Validar()
         {
-            if (Direita == null || Esquerda == null)
-                return false;
-            if (string.IsNullOrEmpty(NomeDoPrato))
+            if (string.IsNullOrEmpty(this.RetornarConteudo()))
                 return false;
             return true;
         }
@@ -52,35 +51,55 @@ namespace JogoGourmet.Domain.Entidades
 
             if (escolha == (int)DialogResult.Yes)
             {
-                MessageBox.Show(@"Acertei!!!", @"Jogo Gourmet");
+                MessageBox.Show(Constantes.Acertei, Constantes.JogoGourmet);
             }
             else
             {
                 var resposta = string.Empty;
-                CaixaDeDialogo.Exibir(@"Jogo Gourmet", "Qual o prato que você pensou?", ref resposta);
+                CaixaDeDialogo.Exibir(Constantes.JogoGourmet, Constantes.QualPratoQuePensou, ref resposta);
 
-                var acao = "";
-                CaixaDeDialogo.Exibir(@"Jogo Gourmet", "E " + resposta + " é _____ mas " + this.RetornarConteudo() + " não é...", ref acao);
+                var acao = string.Empty;
+                CaixaDeDialogo.Exibir(Constantes.JogoGourmet, string.Format(Constantes.CompletarLacuna, resposta, this.RetornarConteudo()), ref acao);
 
-                if (string.IsNullOrEmpty(acao) || string.IsNullOrEmpty(resposta))
-                {
-                    var message = "Por gentileza, você de informar os dados :D !\n"
-                                           + "Vamos voltar para o início sem cadastrar seu prato.";
-                    MessageBox.Show(message, @"Jogo Gourmet");
-                    return;
-                }
+                if (!ValidarAcaoEResposta(acao, resposta)) return;
 
-                var novoPrato = new Prato(null, null, resposta);
-
-                if (ultimaOpcao == (int)DialogResult.Yes)
-                {
-                    noPai.AdicionarFilhoDaDireita(new Questao(this, novoPrato, acao));
-                }
-                else
-                {
-                    noPai.AdicionarFilhoDaEsquerda(new Questao(this, novoPrato, acao));
-                }
+                AdicionarNoFilho(ultimaOpcao, noPai, acao, resposta);
             }
+        }
+
+        private bool ValidarAcaoEResposta(string acao, string resposta)
+        {
+            if (string.IsNullOrEmpty(acao) || string.IsNullOrEmpty(resposta))
+            {
+                MessageBox.Show(Constantes.MSG_DadosInvalidos, Constantes.JogoGourmet);
+                return false;
+            }
+            return true;
+        }
+
+        public void AdicionarNoFilho(int ultimaOpcao, NoDeDecisao noPai, string acao, string resposta)
+        {
+            var prato = NovoPrato(resposta);
+            var questao = NovaQuestao(this, prato, acao);
+
+            if (ultimaOpcao == (int)DialogResult.Yes)
+            {
+                noPai.AdicionarFilhoDaDireita(questao);
+            }
+            else
+            {
+                noPai.AdicionarFilhoDaEsquerda(questao);
+            }
+        }
+
+        private Prato NovoPrato(string resposta)
+        {
+            return new Prato(null, null, resposta);
+        }
+
+        private Questao NovaQuestao(Prato esquerda, Prato direita, string nomeDoPrato)
+        {
+            return new Questao(esquerda, direita, nomeDoPrato);
         }
     }
 }

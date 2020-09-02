@@ -1,8 +1,10 @@
-﻿using System.Windows.Forms;
+﻿using JogoGourmet.Domain.Interfaces;
+using JogoGourmet.Domain.Resources;
+using System.Windows.Forms;
 
 namespace JogoGourmet.Domain.Entidades
 {
-    public class Questao : NoDeDecisao
+    public class Questao : NoDeDecisao, IQuestao
     {
         public NoDeDecisao Direita { get; private set; }
         public NoDeDecisao Esquerda { get; private set; }
@@ -30,24 +32,24 @@ namespace JogoGourmet.Domain.Entidades
 
         public override bool Validar()
         {
-            if (Direita == null || Esquerda == null)
-                return false;
-            if (string.IsNullOrEmpty(Descricao))
+            if (string.IsNullOrEmpty(this.RetornarConteudo()))
                 return false;
             return true;
         }
 
         public override int ObterResposta()
         {
-            var mensagemPergunta = "O prato que você pensou " + this.RetornarConteudo() + "?";
-
-            return (int)MessageBox.Show(mensagemPergunta, @"Jogo Gourmet", MessageBoxButtons.YesNo);
+            return (int)MessageBox.Show(string.Format(Constantes.PerguntaOhPratoQuePensou, this.RetornarConteudo()),
+                Constantes.JogoGourmet, MessageBoxButtons.YesNo);
         }
 
         public override void ProximoNoDeDecisao(int ultimaOpcao, NoDeDecisao noPai)
         {
-            var escolha = this.ObterResposta();
+            RetornarNoFilho(this.ObterResposta());
+        }
 
+        public void RetornarNoFilho(int escolha)
+        {
             if (escolha == (int)DialogResult.Yes)
             {
                 this.RetornarFilhoDaDireita().ProximoNoDeDecisao(escolha, this);

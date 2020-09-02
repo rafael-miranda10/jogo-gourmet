@@ -46,6 +46,8 @@
     <Compile Include="Entidades\NoDeDecisao.cs" />
     <Compile Include="Entidades\Prato.cs" />
     <Compile Include="Entidades\Questao.cs" />
+    <Compile Include="Interfaces\IPrato.cs" />
+    <Compile Include="Interfaces\IQuestao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Constantes.cs" />
     <Compile Include="Utils\CaixaDeDialogo.cs" />

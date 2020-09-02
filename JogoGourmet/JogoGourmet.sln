@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JogoGourmet.App", "JogoGour
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JogoGourmet.Domain", "JogoGourmet.Domain\JogoGourmet.Domain.csproj", "{409B4C45-B6C8-4ABA-8855-0DDE30EAE8B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JogoGourmet.Tets", "JogoGourmet.Tets\JogoGourmet.Tets.csproj", "{908443C0-B162-4375-9F14-8AFEC5C72B00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{409B4C45-B6C8-4ABA-8855-0DDE30EAE8B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{409B4C45-B6C8-4ABA-8855-0DDE30EAE8B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{409B4C45-B6C8-4ABA-8855-0DDE30EAE8B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{908443C0-B162-4375-9F14-8AFEC5C72B00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{908443C0-B162-4375-9F14-8AFEC5C72B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{908443C0-B162-4375-9F14-8AFEC5C72B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{908443C0-B162-4375-9F14-8AFEC5C72B00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
